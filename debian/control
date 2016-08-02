@@ -1,0 +1,19 @@
+Source: puppet-module-yo61-logrotate
+Section: admin
+Priority: optional
+Maintainer: Benoit Boccard <benoit-externe.boccard@edf.fr>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: https://forge.puppet.com/yo61/logrotate
+
+Package: puppet-module-yo61-logrotate
+Architecture: all
+Depends: puppet-common, puppet-module-puppetlabs-stdlib, ${misc:Depends}
+Description: Puppet module logrotate
+ Puppet lets you centrally manage every important aspect of your system
+ using a cross-platform specification language that manages all the
+ separate elements normally aggregated in different files, like users,
+ cron jobs, and hosts, along with obviously discrete elements like
+ packages, services, and files.
+ .
+ This is a puppet module to manage logrotate configs.
