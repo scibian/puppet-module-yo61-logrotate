@@ -1,10 +1,12 @@
 Source: puppet-module-yo61-logrotate
 Section: admin
 Priority: optional
-Maintainer: Benoit Boccard <benoit-externe.boccard@edf.fr>
+Maintainer: Scibian Project <packaging@scibian.org>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
 Homepage: https://forge.puppet.com/yo61/logrotate
+Vcs-Git: https://github.com/scibian/puppet-module-yo61-logrotate.git
+Vcs-Browser: https://github.com/scibian/puppet-module-yo61-logrotate
 
 Package: puppet-module-yo61-logrotate
 Architecture: all
