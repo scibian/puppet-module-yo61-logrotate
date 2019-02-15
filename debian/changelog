@@ -1,3 +1,9 @@
+puppet-module-yo61-logrotate (1.4.0-0sci8u2) scibian8; urgency=medium
+
+  * Add puppet4 dependency.
+
+ -- Benoit Boccard <benoit-externe.boccard@edf.fr>  Fri, 15 Feb 2019 14:26:39 +0100
+
 puppet-module-yo61-logrotate (1.4.0-0sci8u1) scibian8; urgency=medium
 
   * Scibian8 rebuild.
