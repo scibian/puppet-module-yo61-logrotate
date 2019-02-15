@@ -10,7 +10,7 @@ Vcs-Browser: https://github.com/scibian/puppet-module-yo61-logrotate
 
 Package: puppet-module-yo61-logrotate
 Architecture: all
-Depends: puppet-common, puppet-module-puppetlabs-stdlib, ${misc:Depends}
+Depends: puppet4 | puppet-common, puppet-module-puppetlabs-stdlib, ${misc:Depends}
 Description: Puppet module logrotate
  Puppet lets you centrally manage every important aspect of your system
  using a cross-platform specification language that manages all the
