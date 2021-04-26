@@ -1,10 +1,11 @@
 # Logrotate module for Puppet
 
-## Disclaimer
-
-This module is a fork of https://github.com/rodjek/puppet-logrotate merging some of the outstanding pull requests
-
-I have also added the puppetlabs_spec_help functionality as used in [Gareth Rushgrove](https://github.com/garethr)'s [puppet-module-skeleton](https://github.com/garethr/puppet-module-skeleton).
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-logrotate.svg)](https://github.com/voxpupuli/puppet-logrotate/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-logrotate.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-logrotate)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/logrotate.svg)](https://forge.puppetlabs.com/puppet/logrotate)
 
 ## Description
 
@@ -14,7 +15,7 @@ exceptions:
 
  * Booleans are now used instead of the `<something>`/`no<something>` pattern.
    e.g. `copy` == `copy => true`, `nocopy` == `copy => false`.
- * `create` and it's three optional arguments have been split into seperate
+ * `create` and its three optional arguments have been split into seperate
    parameters documented below.
  * Instead of 'daily', 'weekly', 'monthly' or 'yearly', there is a
    `rotate_every` parameter (see documentation below).
@@ -25,6 +26,7 @@ You may, optionally, define logrotate defaults using this defined type.
 Parameters are the same as those for logrotate::rule.
 Using this type will automatically include a private class that will install
 and configure logrotate for you.
+You must not also declare the `logrotate` class if using this defined type as you will encounter a Puppet error if you attempt to do so.
 
 ## logrotate::rule
 
@@ -34,7 +36,8 @@ and configure logrotate for you.
 
 ```
 namevar         - The String name of the rule.
-path            - The path String to the logfile(s) to be rotated.
+path            - The path(s) to the log file(s) to be rotated.  May be a
+                  String or an Array of Strings.
 ensure          - The desired state of the logrotate rule as a String.  Valid
                   values are 'absent' and 'present' (default: 'present').
 compress        - A Boolean value specifying whether the rotated logs should
@@ -62,6 +65,8 @@ dateext         - A Boolean specifying whether rotated log files should be
                   (optional).
 dateformat      - The format String to be used for `dateext` (optional).
                   Valid specifiers are '%Y', '%m', '%d' and '%s'.
+dateyesterday   - A Boolean specifying whether to use yesterday's date instead
+                  of today's date to create the `dateext` extension (optional).
 delaycompress   - A Boolean specifying whether compression of the rotated
                   log file should be delayed until the next logrotate run
                   (optional).
@@ -121,10 +126,7 @@ shredcycles     - The Integer number of times shred should overwrite log files
                   before unlinking them (optional).
 start           - The Integer number to be used as the base for the extensions
                   appended to the rotated log files (optional).
-su              - A Boolean specifying whether logrotate should rotate under
-                  the specific su_owner and su_group instead of the default.
-                  First available in logrotate 3.8.0. (optional)
-su_owner        - A username String that logrotate should use to rotate a
+su_user         - A username String that logrotate should use to rotate a
                   log file set instead of using the default if
                   su => true (optional).
 su_group        - A String group name that logrotate should use to rotate a
@@ -148,12 +150,41 @@ This example will ensure that the logrotate package is latest and that the `date
 class { '::logrotate':
   ensure => 'latest',
   config => {
-    dateext  => true,
-    compress => true,
+    dateext      => true,
+    compress     => true,
+    rotate       => 10,
+    rotate_every => 'week',
+    ifempty      => true,
   }
 }
 ```
 
+### Additional startup arguments
+
+With parameter `logrotate_args` you can specify additional startup arguments for logrotate. Configuration file is always added as the last argument for logrotate.
+
+This example tells logrotate to use an alternate state file and which command to use when mailing logs.
+
+```puppet
+class { '::logrotate':
+  ensure         => 'latest',
+  logrotate_args => ['-s /var/lib/logrotate/logrotate.status', '-m /usr/local/bin/mailer']
+}
+```
+
+### Cron output
+
+By default, the cron output is discarded if there is no error output. To enable this output, when you (for example) enable the verbose startup argument, enable the `cron_always_output` boolean on the logrotate class:
+
+```puppet
+class { '::logrotate':
+  ensure              => 'latest',
+  cron_always_output  => true,
+  config              => {
+    ...
+  }
+}
+```
 
 ## Examples
 
@@ -172,6 +203,13 @@ logrotate::rule { 'messages':
   postrotate   => '/usr/bin/killall -HUP syslogd',
 }
 
+logrotate::rule { 'servicelogs':
+  path         => ['/var/log/this-service.log', '/var/log/that-app.log'],
+  rotate       => 5,
+  rotate_every => 'day',
+  postrotate   => '/usr/bin/kill -HUP `cat /run/syslogd.pid`',
+}
+
 logrotate::rule { 'apache':
   path          => '/var/log/httpd/*.log',
   rotate        => 5,
@@ -181,3 +219,10 @@ logrotate::rule { 'apache':
   postrotate    => '/etc/init.d/httpd restart',
 }
 ```
+
+## Authors and Module History
+
+Puppet-logrotate has been maintained by VoxPupuli since version 2.0.0.
+It was migrated from https://forge.puppet.com/yo61/logrotate.
+yo61's version was a fork of https://github.com/rodjek/puppet-logrotate.
+It is licensed under the MIT license.
