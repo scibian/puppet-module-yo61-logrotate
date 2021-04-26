@@ -1,3 +1,10 @@
+puppet-module-yo61-logrotate (5.0.0-1sci9u1) scibian9; urgency=medium
+
+  * New upstream version 5.0.0
+  * Remove duplicate CONTRIBUTING.md file
+
+ -- Kwame AMEDODJI <kwame-externe.amedodji@edf.fr>  Mon, 26 Apr 2021 21:38:40 +0200
+
 puppet-module-yo61-logrotate (1.4.0-0sci9u1) scibian9; urgency=medium
 
   * Scibian9 rebuild.
