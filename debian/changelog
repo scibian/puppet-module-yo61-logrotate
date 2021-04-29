@@ -1,3 +1,9 @@
+puppet-module-yo61-logrotate (5.0.0-1sci9u4) scibian9; urgency=medium
+
+  * add types entries in install files
+
+ -- Kwame AMEDODJI <kwame-externe.amedodji@edf.fr>  Thu, 29 Apr 2021 16:33:26 +0200
+
 puppet-module-yo61-logrotate (5.0.0-1sci9u3) scibian9; urgency=medium
 
   * add support to puppet stdlib 7.0.0+
