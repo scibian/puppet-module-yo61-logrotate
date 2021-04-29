@@ -2,3 +2,4 @@ metadata.json usr/share/puppet/modules.available/yo61-logrotate
 manifests     usr/share/puppet/modules.available/yo61-logrotate
 templates     usr/share/puppet/modules.available/yo61-logrotate
 files         usr/share/puppet/modules.available/yo61-logrotate
+types         usr/share/puppet/modules.available/yo61-logrotate
